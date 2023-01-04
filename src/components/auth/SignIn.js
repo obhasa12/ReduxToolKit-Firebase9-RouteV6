@@ -1,11 +1,14 @@
 import { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { signIn } from "../../redux/authSlice"
+import { auth } from "../../firebase/fireBaseCof"
+import { signInWithEmailAndPassword } from "firebase/auth"
+
 
 const SignIn = () => {
     const [email, setEmail] = useState('')
-    const [password, setPassword] =useState('')
-    const { authError } = useSelector((state) => state.auth)
+    const [password, setPassword] = useState('')
+    const [error, setError] = useState('')
+    const { authStats } = useSelector((state) => state.auth)
     const dispatch = useDispatch()
 
 
@@ -15,7 +18,16 @@ const SignIn = () => {
     const handleSumbit =(e) => {
         e.preventDefault()
         const credetial = [email, password]
-        dispatch(signIn(credetial))
+        signInWithEmailAndPassword(auth, ...credetial)
+            .then((data) => {
+                console.log('login success')
+                setError(null)
+            })
+            .catch((err) => {
+                console.error(err.message)
+                setError("Login Invalid")
+            })
+
         e.target.reset()
     }
 
@@ -33,6 +45,9 @@ const SignIn = () => {
                 </div>
                 <div className="input-field">
                     <button className="btn pink lighten-1 z-depth-0">Login</button>
+                    <div className="red-text center">
+                        {error && <p>{error}</p>}
+                    </div>
                 </div>
             </form>
         </div>

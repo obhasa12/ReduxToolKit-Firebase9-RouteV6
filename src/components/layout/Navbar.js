@@ -6,7 +6,7 @@ import { onAuthStateChanged } from "firebase/auth";
 
 const Navbar = () => {
     onAuthStateChanged(auth, (user) => {
-        // console.log("user states changed: ", user)
+        console.log("user states changed: ", auth.currentUser.email)
     })
 
     return ( 
