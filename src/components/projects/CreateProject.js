@@ -4,8 +4,8 @@ import { createProject } from "../../redux/ProjectSlice"
 
 const CreateProject = () => {
     const [title, setTitle] = useState('')
-    const [content, setContent] =useState('')
-    const dispatch = useDispatch()
+    const [content, setContent] = useState('')
+    const dispatch = useDispatch();
 
     const handleChange = (e) => {
         e.target.id === 'title'? setTitle(e.target.value): setContent(e.target.value)
@@ -34,7 +34,7 @@ const CreateProject = () => {
                 </div>
             </form>
         </div>
-     );
+    )
 }
  
 export default CreateProject;

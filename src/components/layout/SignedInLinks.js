@@ -1,24 +1,12 @@
 import { useNavigate, NavLink } from "react-router-dom";
-import auth from "../../firebase/fireBaseCof"
-// import { signOut } from "firebase/auth";
 import { signOutAction } from "../../redux/authSlice";
 import { useDispatch } from "react-redux";
 
 const SignedInLinks = () => {
     const dispatch = useDispatch();
-    const navigate = useNavigate();
 
     const handleClick = () => {
-        // signOut(auth)
         dispatch(signOutAction())
-        navigate("/")
-        // console.log(auth)
-            // .then(() => {
-            //     console.log("the user signed out")
-            // })
-            // .catch((err) => {
-            //     console.log(err.message)
-            // })
     }
 
     return ( 
