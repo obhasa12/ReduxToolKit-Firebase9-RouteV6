@@ -3,27 +3,20 @@ import SignedInLinks from "./SignedInLinks";
 import SignedOutLinks from "./SignedOutLinks";
 import { auth } from "../../firebase/fireBaseCof";
 import { onAuthStateChanged } from "firebase/auth";
-import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux"
-import { authState } from "../../redux/authSlice"
+import { useState } from "react";
+
 
 
 const Navbar = () => {
-    const { authStats } = useSelector((state) => state.auth)
-    const dispatch = useDispatch();
+    const[user, setUser] = useState(false)
 
     onAuthStateChanged(auth, (user) => {
-        if(user){
-            dispatch(authState(user.uid))
-        }
-        // user? dispatch(authState(user.uid)) : ;
+        user? setUser(true): setUser(false)
     })
 
-    console.log(authStats)
     
 
-    const userStat = authStats? <SignedInLinks />: <SignedOutLinks />
+    const userStat = user? <SignedInLinks />: <SignedOutLinks />
     return ( 
         <nav className="nav-wrapper grey darken-3">
             <div className="container">

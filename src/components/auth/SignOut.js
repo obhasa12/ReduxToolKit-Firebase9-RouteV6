@@ -1,13 +1,16 @@
 import { useState } from "react"
+import { useDispatch } from "react-redux"
+import { signUp } from "../../redux/authSlice"
 
 const SignOut = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
+    const dispatch = useDispatch();
 
     const handleChange = (e) => {
-        e.target.id === 'email'? setEmail(e.target.value): setPassword(e.target.value)
+        // e.target.id === 'email'? setEmail(e.target.value): setPassword(e.target.value)
         if(e.target.id === 'email'){
             setEmail(e.target.value)
         }else if(e.target.id === 'password'){
@@ -21,7 +24,10 @@ const SignOut = () => {
 
     const handleSumbit =(e) => {
         e.preventDefault()
-        console.log({email, password, firstName, lastName})
+        const cred = {email, password, firstName, lastName}
+        dispatch(signUp(cred))
+        console.log(cred)
+        // console.log({email, password, firstName, lastName})
     }
 
     return ( 

@@ -10,13 +10,13 @@ import { auth } from './firebase/fireBaseCof';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 onAuthStateChanged(auth, (user) => {
-    root.render(
-      <React.StrictMode>
-        <Provider store={store}>
-          <App />
-        </Provider>
-      </React.StrictMode>
-    );
+  root.render(
+    <React.StrictMode>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </React.StrictMode>
+    )        
 })
  
 

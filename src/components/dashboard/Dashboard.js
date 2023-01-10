@@ -14,11 +14,11 @@ const Dashboard = () => {
 
     useEffect(() => {
         dispatch(getProjects());
-        onAuthStateChanged(auth, (user) => {
-            if(!user){
-                navigate("/signin")
-            }
-        })
+        // onAuthStateChanged(auth, (user) => {
+        //     if(!user){
+        //         navigate("/signin")
+        //     }
+        // })
     }, [dispatch]);
     
     return ( 

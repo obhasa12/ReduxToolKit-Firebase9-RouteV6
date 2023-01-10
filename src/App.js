@@ -14,15 +14,15 @@ function App() {
           <div className="App">
             <Navbar />
             <Routes>
-              {/* <Route element={<PrivateRoutesIn />}> */}
+              <Route element={<PrivateRoutesIn />}>
                 <Route exact path='/' element={<Dashboard />} />
                 <Route path='/create' element={<CreateProject />} />
                 <Route path='/project/:id' element={<ProjectDetails />} />
-              {/* </Route> */}
-              {/* <Route element={<PrivateRoutesOut />}> */}
+              </Route>
+              <Route element={<PrivateRoutesOut />}>
                 <Route path='/signin' element={<SignIn />} />
                 <Route path='/signup' element={<SignOut />} />
-              {/* </Route> */}
+              </Route>
             </Routes>
           </div>  
         </BrowserRouter> 
