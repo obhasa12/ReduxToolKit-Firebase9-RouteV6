@@ -9,15 +9,20 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from './firebase/fireBaseCof';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-onAuthStateChanged(auth, (user) => {
-  root.render(
-    <React.StrictMode>
-      <Provider store={store}>
-        <App />
-      </Provider>
-    </React.StrictMode>
-    )        
-})
+  onAuthStateChanged(auth, (user) => {
+    if(auth){
+      root.render(
+        <React.StrictMode>
+          <Provider store={store}>
+            <App />
+          </Provider>
+        </React.StrictMode>
+      )
+    }
+  }) 
+
+  
+
  
 
 

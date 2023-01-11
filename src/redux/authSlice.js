@@ -1,43 +1,36 @@
-import { createSlice, current  } from "@reduxjs/toolkit";
-import { createUserWithEmailAndPassword, signOut } from "firebase/auth";
-import { auth, db  } from "../firebase/fireBaseCof";
-import { doc, setDoc } from "firebase/firestore";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { onAuthStateChanged, signOut} from "firebase/auth";
+import { auth, db } from "../firebase/fireBaseCof";
+import { getDoc } from "firebase/firestore";
 
+// export const getUserData = createAsyncThunk("userData/getUserData",async () => {
+//     return onAuthStateChanged(auth, (user) => {
+//         return getDoc(db, "users", user.uid).then((userData) => console.log(userData))
+//     })
+// })
 
 const initialState = {
-    authError: "error bos"
+    authErrorSignUp: null,
+    authErrorSignIn: null
 }
 
 export const authSlice = createSlice({
     name: 'auth',
     initialState,
     reducers: {
-        authStatus:(state, action) => {
-            state.authError = action.payload
+        errorSignUp:(state, action) => {
+            state.authErrorSignUp = action.payload
+        },
+        errorSignIn:(state, action) => {
+            state.authErrorSignIn = action.payload
         },
         signOutAction: () => {
             signOut(auth)
                 .then(() => console.log("Log Out succes"))
-        },
-        signUp: (state, action) => {
-            const dummy = [2] 
-            createUserWithEmailAndPassword(auth, action.payload.email, action.payload.password)
-                .then((cred) => {
-                    return setDoc(doc(db, "users", cred.user.uid),{
-                        firtsName: action.payload.firstName,
-                        lastName: action.payload.lastName,
-                        initials: action.payload.firstName[0] + action.payload.lastName[0]
-                    })
-                }).then(() => {
-                    console.log("user created")
-                })
-                .catch((err) => {
-                    console.log(err.message)
-                    return state.authError = err.message
-                })
+                .catch((err) => err.message)
         }
     }
 })
 
-export const { signUp, signOutAction, authStatus } = authSlice.actions
+export const { signOutAction, errorSignUp, errorSignIn } = authSlice.actions
 export default authSlice.reducer 

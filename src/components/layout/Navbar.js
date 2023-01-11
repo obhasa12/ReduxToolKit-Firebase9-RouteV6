@@ -14,9 +14,8 @@ const Navbar = () => {
         user? setUser(true): setUser(false)
     })
 
-    
-
     const userStat = user? <SignedInLinks />: <SignedOutLinks />
+    
     return ( 
         <nav className="nav-wrapper grey darken-3">
             <div className="container">

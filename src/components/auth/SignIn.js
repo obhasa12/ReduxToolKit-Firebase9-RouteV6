@@ -2,12 +2,15 @@ import { useState, useEffect } from "react"
 import { auth } from "../../firebase/fireBaseCof"
 import { signInWithEmailAndPassword } from "firebase/auth"
 import { useNavigate } from "react-router-dom"
+import { useDispatch, useSelector } from "react-redux"
+import { errorSignIn } from "../../redux/authSlice"
 
 const SignIn = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    const [error, setError] = useState('')
     const navigate = useNavigate();
+    const { authErrorSignIn } = useSelector((state) => state.auth)
+    const dispatch = useDispatch();
 
     const handleChange = (e) => {
         e.target.id === 'email'? setEmail(e.target.value): setPassword(e.target.value)
@@ -16,14 +19,13 @@ const SignIn = () => {
         e.preventDefault()
         const credetial = [email, password]
         signInWithEmailAndPassword(auth, ...credetial)
-            .then((data) => {
+            .then(() => {
                 console.log('login success')
-                setError(null)
+                dispatch(errorSignIn(null))
                 navigate("/")
             })
             .catch((err) => {
-                console.error(err.message)
-                setError("Login Invalid")
+                dispatch(errorSignIn(err.code))
             })
 
         e.target.reset()
@@ -44,7 +46,7 @@ const SignIn = () => {
                 <div className="input-field">
                     <button className="btn pink lighten-1 z-depth-0">Login</button>
                     <div className="red-text center">
-                        {error && <p>{error}</p>}
+                        {authErrorSignIn && <p>{authErrorSignIn}</p>}
                     </div>
                 </div>
             </form>

@@ -1,16 +1,21 @@
 import { useState } from "react"
-import { useDispatch } from "react-redux"
-import { signUp } from "../../redux/authSlice"
+import { useDispatch, useSelector } from "react-redux"
+import { createUserWithEmailAndPassword } from "firebase/auth"
+import { doc, setDoc } from "firebase/firestore"
+
+import { errorSignUp } from "../../redux/authSlice"
+import { auth } from "../../firebase/fireBaseCof"
+import { db } from "../../firebase/fireBaseCof"
 
 const SignOut = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
+    const { authErrorSignUp } = useSelector((state) => state.auth)
     const dispatch = useDispatch();
 
     const handleChange = (e) => {
-        // e.target.id === 'email'? setEmail(e.target.value): setPassword(e.target.value)
         if(e.target.id === 'email'){
             setEmail(e.target.value)
         }else if(e.target.id === 'password'){
@@ -24,12 +29,22 @@ const SignOut = () => {
 
     const handleSumbit =(e) => {
         e.preventDefault()
-        const cred = {email, password, firstName, lastName}
-        dispatch(signUp(cred))
-        console.log(cred)
-        // console.log({email, password, firstName, lastName})
+        createUserWithEmailAndPassword(auth, email, password)
+        .then((cred) => {
+            return setDoc(doc(db, "users", cred.user.uid),{
+                firtsName: firstName,
+                lastName: lastName,
+                initials: firstName[0] + lastName[0]
+            })
+        }).then(() => {
+            console.log("user created")
+            dispatch(errorSignUp(null))
+        })
+        .catch((err) => {
+            dispatch(errorSignUp(err.code))
+        })
     }
-
+    
     return ( 
         <div className="container">
             <form onSubmit={handleSumbit} className="white">
@@ -52,6 +67,9 @@ const SignOut = () => {
                 </div>
                 <div className="input-field">
                     <button className="btn pink lighten-1 z-depth-0">Sign Up</button>
+                    <div className="center red-text">
+                        {authErrorSignUp && <p>{authErrorSignUp}</p>}
+                    </div>
                 </div>
             </form>
         </div>
