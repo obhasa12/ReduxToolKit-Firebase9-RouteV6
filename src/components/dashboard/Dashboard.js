@@ -3,16 +3,15 @@ import ProjectList from "../projects/ProjectList";
 import { useSelector, useDispatch } from 'react-redux';
 import { getProjects } from "../../redux/ProjectSlice";
 import { useEffect } from "react";
-import { onAuthStateChanged } from "firebase/auth";
-import { useNavigate } from "react-router-dom";
-import { auth } from "../../firebase/fireBaseCof";
 
 const Dashboard = () => {
     const { projects } = useSelector(state => state.projects)
+    const { userData } = useSelector(state => state.auth)
     const dispatch = useDispatch();
 
     useEffect(() => {
         dispatch(getProjects());
+        console.log(userData)
     }, [dispatch]);
     
     return ( 

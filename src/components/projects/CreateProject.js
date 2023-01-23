@@ -12,7 +12,8 @@ const CreateProject = () => {
     }
     const handleSumbit =(e) => {
         e.preventDefault()
-        const output = {title, content}
+        const output = {
+            title, content}
         dispatch(createProject(output))
         e.target.reset();
     }

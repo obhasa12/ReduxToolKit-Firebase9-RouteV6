@@ -3,7 +3,10 @@ import { auth } from "../../firebase/fireBaseCof"
 import { signInWithEmailAndPassword } from "firebase/auth"
 import { useNavigate } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
-import { errorSignIn } from "../../redux/authSlice"
+import { errorSignIn, userData } from "../../redux/authSlice"
+import { getUserData } from "../../redux/authSlice";
+
+
 
 const SignIn = () => {
     const [email, setEmail] = useState('')
@@ -12,15 +15,23 @@ const SignIn = () => {
     const { authErrorSignIn } = useSelector((state) => state.auth)
     const dispatch = useDispatch();
 
+    useEffect(() => {
+        dispatch(getUserData({email, password}));
+    }, [dispatch]);
+
     const handleChange = (e) => {
         e.target.id === 'email'? setEmail(e.target.value): setPassword(e.target.value)
     }
+
     const handleSumbit =(e) => {
         e.preventDefault()
         const credetial = [email, password]
         signInWithEmailAndPassword(auth, ...credetial)
-            .then(() => {
-                console.log('login success')
+            .then((user) => {
+                const auth = user.user
+                console.log('login success', auth)
+                dispatch(errorSignIn(auth))
+
                 dispatch(errorSignIn(null))
                 navigate("/")
             })
